@@ -4,13 +4,6 @@
 # WSZSHA001
 # ------------------------------------------------------------
 
-'''
-Sample input:
--------------
-a=45
-b=a+(78-a)*2
-#
-'''
 
 import ply.lex as lex
 
@@ -110,9 +103,22 @@ def get_input():
 
 
 def main():
+    """
+    Gets the input data, builds the lexer, and then prints the tokens.
+    """
     data = get_input()
     print_tokens(data)
 
 
 if __name__ == "__main__":
     main()
+
+
+'''
+-------------
+Sample input:
+-------------
+a=45
+b=a+(78-a)*2
+#
+'''
