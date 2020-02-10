@@ -5,6 +5,8 @@
 # ------------------------------------------------------------
 
 '''
+Sample input:
+-------------
 a=45
 b=a+(78-a)*2
 #
@@ -20,6 +22,7 @@ def build_lexer():
     tokens = ['NAME', 'NUMBER', 'PLUS', 'EQUALS', 'LBRACKET', 'RBRACKET']
 
     t_ignore = ' \t'
+
     t_NAME = r'[a-zA-Z_]\w*'  # \w matches any alphanumeric character (equivalent to [a-zA-Z0-9_])
     t_PLUS = r'\+'
     t_EQUALS = r'='
@@ -42,6 +45,24 @@ def build_lexer():
     return lex.lex()
 
 
+def display_token_type(token):
+    """
+    Returns the token type formatted for required display purposes.
+
+    e.g. "EQUALS" will return "="
+    """
+    if token == "EQUALS":
+        return "="
+    if token == "PLUS":
+        return "+"
+    if token == "LBRACKET":
+        return "("
+    if token == "RBRACKET":
+        return ")"
+    else:
+        return token
+
+
 def format_val(val):
     """
     Returns a formatted value for required display format purposes.
@@ -54,24 +75,43 @@ def format_val(val):
     return val
 
 
-def main():
+def get_formatted_token(token):
+    """
+    Returns a string with the token displayed in the required format.
+    e.g. ('NAME', 'a', 1, 0)
+    """
+    return "('{}', {}, {}, {})".format(display_token_type(token.type),
+                                       format_val(token.value),
+                                       token.lineno,
+                                       token.lexpos)
+
+
+def print_tokens(data):
     """
     Prints the tokens of a lexer for a simple adder.
+    """
+    lexer = build_lexer()
+    lexer.input(data)
+
+    for token in lexer:
+        print(get_formatted_token(token))
+
+
+def get_input():
+    """
+    Returns a single string with the data from the user to be passed into the lexer.
     """
     data = ''
     line = input()
     while(line != '#'):
         data += line + "\n"
         line = input()
+    return data
 
-    lexer = build_lexer()
-    lexer.input(data)
 
-    for token in lexer:
-        print("('{}', {}, {}, {})".format(token.type,
-                                          format_val(token.value),
-                                          token.lineno,
-                                          token.lexpos))
+def main():
+    data = get_input()
+    print_tokens(data)
 
 
 if __name__ == "__main__":
